@@ -197,7 +197,7 @@ const Dashboard = () => {
             </div>
 
             {/* dashboard buttons */}
-            <div className="flex flex-col  md:items-center  md:justify-center   gap-8  md:w-[80%] w-screen overflow-x-auto ">
+            <div className="flex flex-col  items-center  md:justify-center   gap-8  md:w-[80%] w-screen overflow-x-auto ">
               <div className="flex md:gap-4 gap-2 ml-1 md:ml-0">
                 <div className="bg-[#fefeff] border border-black shadow-md shadow-black p-4 gap-2 md:w-72 h-28 flex flex-col items-center justify-center rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out">
                   <FontAwesomeIcon
