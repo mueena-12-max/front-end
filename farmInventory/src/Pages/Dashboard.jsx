@@ -27,6 +27,7 @@ const Dashboard = () => {
   const [suppliersColor, setSuppliersColor] = useState(false);
   const [customersColor, setCustomersColor] = useState(false);
   const [statistics, setStatistics] = useState(false);
+  const [settings, setSettings] = useState(false);
 
   useEffect(() => {
     if (!login || !token) {
@@ -52,7 +53,7 @@ const Dashboard = () => {
             height={30}
             className="rounded-full"
           />
-          <span>2M WORLWIDE LTD</span>
+          <span>2M WORLDWIDE LTD</span>
         </div>
         <div>
           <div className="flex items-center gap-4  text-white md:mr-16">
@@ -93,6 +94,7 @@ const Dashboard = () => {
               setSuppliersColor(false);
               setCustomersColor(false);
               setStatistics(false);
+              setSettings(false);
             }}
           >
             <FontAwesomeIcon icon=" fa-tachometer" className="text-4xl" />
@@ -106,6 +108,7 @@ const Dashboard = () => {
               setSuppliersColor(false);
               setCustomersColor(false);
               setStatistics(false);
+              setSettings(false);
             }}
           >
             <FontAwesomeIcon icon="fa-cart-shopping" className="text-4xl" />
@@ -119,6 +122,7 @@ const Dashboard = () => {
               setSuppliersColor(true);
               setCustomersColor(false);
               setStatistics(false);
+              setSettings(false);
             }}
           >
             <FontAwesomeIcon icon=" fa-cart-shopping" className="text-4xl" />
@@ -132,6 +136,7 @@ const Dashboard = () => {
               setSuppliersColor(false);
               setCustomersColor(true);
               setStatistics(false);
+              setSettings(false);
             }}
           >
             <FontAwesomeIcon icon=" fa-users" className="text-4xl" />
@@ -145,19 +150,21 @@ const Dashboard = () => {
               setSuppliersColor(false);
               setCustomersColor(false);
               setStatistics(true);
+              setSettings(false);
             }}
           >
             <FontAwesomeIcon icon=" fa-chart-bar" className="text-4xl" />
             <span className="text-[20px]">Statistics</span>
           </div>
           <div
-            className={`${statistics ? "bg-white text-black" : "text-white"} flex items-center gap-2   py-4 hover:bg-gray-600 hover:cursor-pointer p-2`}
+            className={`${settings ? "bg-white text-black" : "text-white"} flex items-center gap-2   py-4 hover:bg-gray-600 hover:cursor-pointer p-2`}
             onClick={() => {
               setProductsColor(false);
               setDashboardColor(false);
               setSuppliersColor(false);
               setCustomersColor(false);
-              setStatistics(true);
+              setStatistics(false);
+              setSettings(true);
             }}
           >
             <FontAwesomeIcon icon=" fa-gear" className="text-4xl" />
@@ -199,21 +206,48 @@ const Dashboard = () => {
             {/* dashboard buttons */}
             <div className="flex flex-col  items-center  md:justify-center   gap-8  md:w-[80%] w-screen overflow-x-auto ">
               <div className="flex md:gap-4 gap-2 ml-1 md:ml-0">
-                <div className="bg-[#fefeff] border border-black shadow-md shadow-black p-4 gap-2 md:w-72 h-28 flex flex-col items-center justify-center rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out">
+                <div
+                  className="bg-[#fefeff] border border-black shadow-md shadow-black p-4 gap-2 md:w-72 h-28 flex flex-col items-center justify-center rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out"
+                  onClick={() => {
+                    setProductsColor(true);
+                    setDashboardColor(false);
+                    setSuppliersColor(false);
+                    setCustomersColor(false);
+                    setStatistics(false);
+                  }}
+                >
                   <FontAwesomeIcon
                     icon="fa-cart-shopping"
                     className="text-5xl"
                   />
                   <h3 className="text-xl  text-shadow-2xl ">Products</h3>
                 </div>
-                <div className="bg-[#fefeff] border border-black shadow-md shadow-black gap-2 p-4 md:w-72 flex flex-col items-center justify-center h-28 rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out">
+                <div
+                  className="bg-[#fefeff] border border-black shadow-md shadow-black gap-2 p-4 md:w-72 flex flex-col items-center justify-center h-28 rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out"
+                  onClick={() => {
+                    setProductsColor(false);
+                    setDashboardColor(false);
+                    setSuppliersColor(true);
+                    setCustomersColor(false);
+                    setStatistics(false);
+                  }}
+                >
                   <FontAwesomeIcon
                     icon="fa-cart-shopping"
                     className="text-5xl"
                   />
                   <h3 className="text-xl">Suppliers</h3>
                 </div>
-                <div className="bg-[#fefeff] border border-black shadow-md shadow-black p-4 gap-2 md:w-72 flex flex-col items-center justify-center h-28 rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out">
+                <div
+                  className="bg-[#fefeff] border border-black shadow-md shadow-black p-4 gap-2 md:w-72 flex flex-col items-center justify-center h-28 rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out"
+                  onClick={() => {
+                    setProductsColor(false);
+                    setDashboardColor(false);
+                    setSuppliersColor(false);
+                    setCustomersColor(true);
+                    setStatistics(false);
+                  }}
+                >
                   <FontAwesomeIcon icon="fa-users" className="text-5xl" />
                   <h3 className="text-xl">Customers</h3>
                 </div>
