@@ -1,5 +1,6 @@
 import React from "react";
 import Login from "./Features/Login";
+import { Toaster } from "react-hot-toast";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import Dasboard from "./Pages/Dashboard";
 import Signup from "./Pages/Signup";
@@ -28,6 +29,7 @@ const App = () => {
       }}
     >
       <RouterProvider router={router} />
+      <Toaster position="bottom-right" />
     </div>
   );
 };

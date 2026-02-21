@@ -53,7 +53,7 @@ const Dashboard = () => {
             height={30}
             className="rounded-full"
           />
-          <span>2M WORLDWIDE LTD</span>
+          <span className="shadow-lg">2M WORLDWIDE LTD</span>
         </div>
         <div>
           <div className="flex items-center gap-4  text-white md:mr-16">
@@ -111,7 +111,10 @@ const Dashboard = () => {
               setSettings(false);
             }}
           >
-            <FontAwesomeIcon icon="fa-cart-shopping" className="text-4xl" />
+            <FontAwesomeIcon
+              icon="fa-cart-shopping"
+              className="text-4xl text-[#10a11c]"
+            />
             <span className="text-[20px]">Products</span>
           </div>
           <div
@@ -125,7 +128,10 @@ const Dashboard = () => {
               setSettings(false);
             }}
           >
-            <FontAwesomeIcon icon=" fa-cart-shopping" className="text-4xl" />
+            <FontAwesomeIcon
+              icon=" fa-cart-shopping"
+              className="text-4xl text-lime-300"
+            />
             <span className="text-[20px]">Suppliers</span>
           </div>
           <div
@@ -139,7 +145,10 @@ const Dashboard = () => {
               setSettings(false);
             }}
           >
-            <FontAwesomeIcon icon=" fa-users" className="text-4xl" />
+            <FontAwesomeIcon
+              icon=" fa-users"
+              className="text-4xl text-[#db721c]"
+            />
             <span className="text-[20px]">Customers</span>
           </div>
           <div
@@ -153,7 +162,10 @@ const Dashboard = () => {
               setSettings(false);
             }}
           >
-            <FontAwesomeIcon icon=" fa-chart-bar" className="text-4xl" />
+            <FontAwesomeIcon
+              icon=" fa-chart-bar"
+              className="text-4xl text-violet-800"
+            />
             <span className="text-[20px]">Statistics</span>
           </div>
           <div
@@ -167,7 +179,10 @@ const Dashboard = () => {
               setSettings(true);
             }}
           >
-            <FontAwesomeIcon icon=" fa-gear" className="text-4xl" />
+            <FontAwesomeIcon
+              icon=" fa-gear"
+              className="text-4xl text-[darkred]"
+            />
             <span className="text-[20px]">Settings</span>
           </div>
           <div className="relative -bottom-36 hidden md:flex md:flex-col">
@@ -199,7 +214,7 @@ const Dashboard = () => {
                 "linear-gradient(135deg,rgba(0,86,179,0,0.85),rgba(0,160,209,0.9)),URL('logo.jpeg') no-repeat center/contain",
             }}
           >
-            <div className="text-4xl font-[apple-system] text-gray-800 text-center">
+            <div className="text-4xl font-[apple-system] text-gray-800 text-center shadow-3d">
               <h1>2M WORLDWIDE LTD</h1>
             </div>
 
@@ -207,7 +222,7 @@ const Dashboard = () => {
             <div className="flex flex-col  items-center  md:justify-center   gap-8  md:w-[80%] w-screen overflow-x-auto ">
               <div className="flex md:gap-4 gap-2 ml-1 md:ml-0">
                 <div
-                  className="bg-[#fefeff] border border-black shadow-md shadow-black p-4 gap-2 md:w-72 h-28 flex flex-col items-center justify-center rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out"
+                  className="bg-[#10a11c] text-white border border-green-800 shadow-md shadow-black p-4 gap-2 md:w-72 h-28 flex flex-col items-center justify-center rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out cursor-pointer"
                   onClick={() => {
                     setProductsColor(true);
                     setDashboardColor(false);
@@ -223,7 +238,7 @@ const Dashboard = () => {
                   <h3 className="text-xl  text-shadow-2xl ">Products</h3>
                 </div>
                 <div
-                  className="bg-[#fefeff] border border-black shadow-md shadow-black gap-2 p-4 md:w-72 flex flex-col items-center justify-center h-28 rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out"
+                  className="bg-[#8cc210] text-white border border-[#8cc208] shadow-md shadow-black gap-2 p-4 md:w-72 flex flex-col items-center justify-center h-28 rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out"
                   onClick={() => {
                     setProductsColor(false);
                     setDashboardColor(false);
@@ -239,7 +254,7 @@ const Dashboard = () => {
                   <h3 className="text-xl">Suppliers</h3>
                 </div>
                 <div
-                  className="bg-[#fefeff] border border-black shadow-md shadow-black p-4 gap-2 md:w-72 flex flex-col items-center justify-center h-28 rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out"
+                  className="bg-[#db721c] text-white border border-[#c55c14] shadow-md shadow-black p-4 gap-2 md:w-72 flex flex-col items-center justify-center h-28 rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out"
                   onClick={() => {
                     setProductsColor(false);
                     setDashboardColor(false);
@@ -252,12 +267,12 @@ const Dashboard = () => {
                   <h3 className="text-xl">Customers</h3>
                 </div>
               </div>
-              <div className="flex md:gap-4 gap-2 ml-1 md:ml-0">
-                <div className="bg-[#fefeff] border border-black shadow-md shadow-black p-4  md:w-72 flex flex-col gap-2 items-center justify-center h-28 rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out">
+              <div className="flex md:gap-4 gap-2 ml-1 md:ml-0 pb-2">
+                <div className="bg-[#5eb5dd] text-white border border-[#5eb5db] shadow-md shadow-black p-4  md:w-72 flex flex-col gap-2 items-center justify-center h-28 rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out">
                   <FontAwesomeIcon icon="fa-users" className="text-5xl" />
                   <h3 className="text-xl text-center">Sales Report</h3>
                 </div>
-                <div className="bg-[#fefeff] border border-black shadow-md shadow-black p-4   md:w-72 flex flex-col gap-2 items-center justify-center h-28 rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out">
+                <div className="bg-violet-800 text-white border border-violet-600 shadow-md shadow-black p-4   md:w-72 flex flex-col gap-2 items-center justify-center h-28 rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out">
                   <FontAwesomeIcon icon="fa-chart-bar" className="text-5xl" />
                   <h3 className="text-xl">Statistics</h3>
                 </div>
@@ -275,19 +290,19 @@ const Dashboard = () => {
 
         {/*any other code below here is another navigation section */}
         <section
-          className={`${productsColor ? "flex ml-16 w-full  h-[93vh] overflow-auto" : "hidden"}`}
+          className={`${productsColor ? "flex md:ml-16 w-full ml-2 h-[93vh] overflow-auto" : "hidden"}`}
         >
           <ProductsPage />
         </section>
         {/*customers section */}
         <section
-          className={`${customersColor ? "flex ml-16 w-full  h-[93vh] overflow-auto" : "hidden"}`}
+          className={`${customersColor ? "flex md:ml-16 ml-2 w-full  h-[93vh] overflow-auto" : "hidden"}`}
         >
           <CustomersPage />
         </section>
         {/*suppliers section */}
         <section
-          className={`${suppliersColor ? "flex ml-16 w-full  h-[93vh] overflow-auto" : "hidden"}`}
+          className={`${suppliersColor ? "flex md:ml-16 ml-2 w-full  h-[93vh] overflow-auto" : "hidden"}`}
         >
           <SuppliersPage />
         </section>

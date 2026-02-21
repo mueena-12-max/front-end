@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../Store/authStore";
+import toast from "react-hot-toast";
 const Login = () => {
   const navigate = useNavigate();
 
@@ -25,14 +26,14 @@ const Login = () => {
         body: JSON.stringify({ username, password }),
       });
       const data = await res.json();
-      if (!res.ok) return alert(data.error);
-      if (data.token) {
-        alert(data.message);
-        loginFunc(data.token);
+      if (!res.ok) return toast.error(data.error);
+      if (data.token && data.refreshToken) {
+        toast.success(data.message);
+        loginFunc(data.token, data.refreshToken);
         navigate("/dashboard");
       }
     } catch (error) {
-      alert("Poor network connection");
+      toast.error("Poor network connection");
       console.error(error.message);
     }
   };
@@ -74,8 +75,8 @@ const Login = () => {
           />
           <span>Show Password</span>
         </div>
-        <div className="text-center border">
-          <button type="submit" className="">
+        <div className="text-center  bg-linear-to-r rounded-md from-orange-600 via-orange-300   to-orange-600 ">
+          <button type="submit" className="text-white font-bold text-xl">
             Login
           </button>
         </div>
