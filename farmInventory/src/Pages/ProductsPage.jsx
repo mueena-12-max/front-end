@@ -24,7 +24,7 @@ const ProductsPage = () => {
   //state for keepind fetched products
   const [fetchedProducts, setFetchedProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+
   const [searchTerm, setSearchTerm] = useState("");
 
   //state for fetched suppliers (for dropdown)
@@ -47,7 +47,6 @@ const ProductsPage = () => {
       if (!token) return;
 
       setIsLoading(true);
-      setError(null);
 
       try {
         const res = await fetch(`http://localhost:5000/product/fetch`, {
@@ -58,15 +57,9 @@ const ProductsPage = () => {
           },
         });
         const data = await res.json();
-
-        if (!res.ok) {
-          setError(data.error);
-          return toast.error(data.error);
-        }
-
+        if (!res.ok) return;
         setFetchedProducts(data.products || []);
       } catch (error) {
-        setError(error.message);
         console.error(error.message);
         toast.error("Failed to fetch products");
       } finally {
@@ -179,22 +172,11 @@ const ProductsPage = () => {
       </div>
       {/*main content */}
       <div className="w-full flex flex-col gap-2">
-        <div className="w-[70%] flex justify-between  ">
-          <div>
-            <button className="bg-[#e8e9e9] py-1  px-2 shadow border border-gray-800 rounded-md">
-              <FontAwesomeIcon
-                icon="fa-arrow-left"
-                className="bg-black text-white rounded-full  p-1"
-              />
-              <span className="text-[18px] ml-2 ">Back</span>
-            </button>
-          </div>
-          <div className="flex flex-col gap-1 text-[18px]">
+        <div className="w-[70%] flex justify-start  font-bold   ">
+          <div className="flex flex-col gap-1 md:text-[25px]">
             <span>
               Total Number of Products:{" "}
-              <span className="text-[#018100] font-bold">
-                [{totalProducts}]
-              </span>
+              <span className="text-[#018100] ">[{totalProducts}]</span>
             </span>
             <span>
               <span className="font-bold text-[#ff5f60]">
@@ -362,19 +344,26 @@ const ProductsPage = () => {
             />
             <span className="ml-2 text-lg">Loading products...</span>
           </div>
-        ) : error ? (
-          <div className="w-[90%] flex justify-center items-center py-8 text-red-500">
-            <FontAwesomeIcon
-              icon="fa-exclamation-circle"
-              className="text-xl mr-2"
-            />
-            <span>Error: {error}</span>
-          </div>
         ) : filteredProducts.length === 0 ? (
-          <div className="w-[90%] flex justify-center items-center py-8 text-gray-500">
-            <FontAwesomeIcon icon="fa-box-open" className="text-xl mr-2" />
-            <span>No products found</span>
-          </div>
+          <table className="w-[90%]">
+            <thead className="bg-[#efefee]">
+              <tr>
+                <th className="py-2">Product Name</th>
+                <th className="py-2">Quantity(Bags)</th>
+                <th className="py-2">Total Price</th>
+                <th className="py-2">Date Of Supply</th>
+                <th className="py-2">Supplier Name</th>
+                <th className="py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colSpan={6} className="text-center py-8 text-gray-500">
+                  No products found
+                </td>
+              </tr>
+            </tbody>
+          </table>
         ) : (
           <table className="w-[90%] relative z-0">
             <thead className="bg-[#efefee] ring-2 ring-gray-300 ring-inset">

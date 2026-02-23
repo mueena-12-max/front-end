@@ -1,9 +1,11 @@
 import React from "react";
 import Login from "./Features/Login";
+import ForgotPassword from "./Features/ForgotPassword";
 import { Toaster } from "react-hot-toast";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import Dasboard from "./Pages/Dashboard";
 import Signup from "./Pages/Signup";
+import StatisticsPage from "./Pages/StatisticsPage";
 
 const App = () => {
   const router = createHashRouter([
@@ -18,6 +20,14 @@ const App = () => {
     {
       path: "/signup",
       element: <Signup />,
+    },
+    {
+      path: "/statistics",
+      element: <StatisticsPage />,
+    },
+    {
+      path: "/forgot-password",
+      element: <ForgotPassword />,
     },
   ]);
   return (
