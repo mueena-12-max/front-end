@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 // API URL - use environment variable in production
@@ -16,17 +16,29 @@ const PASSWORD_REQUIREMENTS = [
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+
+  // Step 1: Email entry
+  // Step 2: OTP verification
+  // Step 3: Password reset
+  const [step, setStep] = useState(1);
+
+  // Email state
   const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [step, setStep] = useState(searchParams.get("token") ? 2 : 1);
-  const [token, setToken] = useState(searchParams.get("token") || "");
+
+  // OTP state
+  const [otp, setOtp] = useState("");
+  const [verificationToken, setVerificationToken] = useState("");
+
+  // Password state
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordErrors, setPasswordErrors] = useState([]);
+
+  // UI state
+  const [isLoading, setIsLoading] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
 
-  // Step 1: Request password reset
+  // Step 1: Request password reset - sends OTP
   const handleRequestReset = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -40,15 +52,18 @@ const ForgotPassword = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error(data.error || "Failed to send reset email");
+        toast.error(data.error || "Failed to send OTP");
         setIsLoading(false);
         return;
       }
 
-      toast.success(data.message);
+      toast.success("OTP sent to your email!");
       // Start cooldown for resend
       setResendCooldown(60);
       setTimeout(() => setResendCooldown(0), 60000);
+
+      // Move to OTP verification step
+      setStep(2);
     } catch (error) {
       toast.error("Poor network connection");
       console.error(error.message);
@@ -57,8 +72,8 @@ const ForgotPassword = () => {
     }
   };
 
-  // Resend token
-  const handleResendToken = async () => {
+  // Resend OTP
+  const handleResendOtp = async () => {
     if (resendCooldown > 0 || !email) return;
 
     setIsLoading(true);
@@ -71,14 +86,46 @@ const ForgotPassword = () => {
       const data = await res.json();
 
       if (res.ok) {
-        toast.success("Reset email sent again");
+        toast.success("OTP sent again");
         setResendCooldown(60);
         setTimeout(() => setResendCooldown(0), 60000);
       } else {
         toast.error(data.error || "Failed to resend");
       }
+    } catch {
+      toast.error("Failed to resend OTP");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Step 2: Verify OTP
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const res = await fetch(`${API_URL}/auth/verify-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, otp }),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.error || "Invalid OTP");
+        setIsLoading(false);
+        return;
+      }
+
+      toast.success("OTP verified!");
+      setVerificationToken(data.verificationToken);
+
+      // Move to password reset step
+      setStep(3);
     } catch (error) {
-      toast.error("Failed to resend email");
+      toast.error("Poor network connection");
+      console.error(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -97,7 +144,7 @@ const ForgotPassword = () => {
     return errors.length === 0;
   };
 
-  // Step 2: Reset password with token
+  // Step 3: Reset password
   const handleResetPassword = async (e) => {
     e.preventDefault();
 
@@ -117,7 +164,7 @@ const ForgotPassword = () => {
       const res = await fetch(`${API_URL}/auth/reset-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, newPassword }),
+        body: JSON.stringify({ verificationToken, newPassword }),
       });
       const data = await res.json();
 
@@ -142,9 +189,30 @@ const ForgotPassword = () => {
     }
   };
 
+  // Handle OTP input - only allow numbers and max 6 digits
+  const handleOtpChange = (e) => {
+    const value = e.target.value.replace(/\D/g, "").slice(0, 6);
+    setOtp(value);
+  };
+
+  // Go back to email step
+  const handleBackToEmail = () => {
+    setStep(1);
+    setOtp("");
+  };
+
+  // Go back to OTP step
+  const handleBackToOtp = () => {
+    setStep(2);
+    setNewPassword("");
+    setConfirmPassword("");
+    setPasswordErrors([]);
+  };
+
   return (
     <div className="flex justify-center items-center h-full">
-      {step === 1 ? (
+      {/* Step 1: Email Entry */}
+      {step === 1 && (
         <form
           onSubmit={handleRequestReset}
           className="flex flex-col gap-2 opacity-90 bg-linear-to-r from-yellow-200 via-white to-yellow-200 shadow-sm p-4 shadow-black rounded-2xl leading-loose"
@@ -153,7 +221,7 @@ const ForgotPassword = () => {
             Reset Your Password
           </h2>
           <p className="text-sm text-gray-600">
-            Enter your email address and we'll send you a reset link.
+            Enter your email address and we'll send you an OTP.
           </p>
 
           <div className="flex flex-col gap-1">
@@ -174,52 +242,98 @@ const ForgotPassword = () => {
               disabled={isLoading}
               className="text-white font-bold text-xl disabled:opacity-50"
             >
-              {isLoading ? "Sending..." : "Send Reset Link"}
+              {isLoading ? "Sending..." : "Send OTP"}
+            </button>
+          </div>
+
+          <span>
+            <Link to="/" className="text-orange-800 font-bold hover:underline">
+              Back to Login
+            </Link>
+          </span>
+        </form>
+      )}
+
+      {/* Step 2: OTP Verification */}
+      {step === 2 && (
+        <form
+          onSubmit={handleVerifyOtp}
+          className="flex flex-col gap-2 opacity-90 bg-linear-to-r from-yellow-200 via-white to-yellow-200 shadow-sm p-4 shadow-black rounded-2xl leading-loose"
+        >
+          <h2 className="text-center text-xl font-bold text-orange-700">
+            Enter OTP
+          </h2>
+          <p className="text-sm text-gray-600">
+            We've sent a 6-digit OTP to <strong>{email}</strong>
+          </p>
+
+          <div className="flex flex-col gap-1">
+            <label htmlFor="otp">One-Time Password</label>
+            <input
+              type="text"
+              id="otp"
+              required
+              placeholder="Enter 6-digit OTP"
+              maxLength={6}
+              className="border w-[80vw] md:w-[20vw] pl-2 py-1 outline-none rounded-md font-bold text-center text-2xl tracking-[0.5em]"
+              value={otp}
+              onChange={handleOtpChange}
+            />
+          </div>
+
+          <div className="text-center bg-linear-to-r rounded-md from-orange-600 via-orange-300 to-orange-600">
+            <button
+              type="submit"
+              disabled={isLoading || otp.length !== 6}
+              className="text-white font-bold text-xl disabled:opacity-50"
+            >
+              {isLoading ? "Verifying..." : "Verify OTP"}
             </button>
           </div>
 
           <div className="text-center">
             <button
               type="button"
-              onClick={handleResendToken}
-              disabled={isLoading || resendCooldown > 0 || !email}
-              className="text-blue-500 text-sm hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleResendOtp}
+              disabled={isLoading || resendCooldown > 0}
+              className="text-orange-700-500 text-sm hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {resendCooldown > 0
                 ? `Resend in ${resendCooldown}s`
-                : "Resend Email"}
+                : "Resend OTP"}
+            </button>
+          </div>
+
+          <div className="text-center">
+            <button
+              type="button"
+              onClick={handleBackToEmail}
+              className="text-orange-500 text-sm hover:underline"
+            >
+              Change Email
             </button>
           </div>
 
           <span>
-            <Link to="/" className="text-blue-500 hover:underline">
+            <Link to="/" className="text-orange-600 hover:underline">
               Back to Login
             </Link>
           </span>
         </form>
-      ) : (
+      )}
+
+      {/* Step 3: Password Reset */}
+      {step === 3 && (
         <form
           onSubmit={handleResetPassword}
           className="flex flex-col gap-2 opacity-90 bg-linear-to-r from-yellow-200 via-white to-yellow-200 shadow-sm p-4 shadow-black rounded-2xl leading-loose"
         >
           <h2 className="text-center text-xl font-bold text-orange-700">
-            Enter New Password
+            Create New Password
           </h2>
           <p className="text-sm text-gray-600">
-            Enter the token from your email and create a strong password.
+            OTP verified! Now create a strong password.
           </p>
-
-          <div className="flex flex-col gap-1">
-            <label htmlFor="token">Reset Token</label>
-            <input
-              type="text"
-              id="token"
-              required
-              className="border w-[80vw] md:w-[20vw] pl-2 py-1 outline-none rounded-md font-bold"
-              value={token}
-              onChange={(e) => setToken(e.target.value)}
-            />
-          </div>
 
           <div className="flex flex-col gap-1">
             <label htmlFor="newPassword">New Password</label>
@@ -296,8 +410,18 @@ const ForgotPassword = () => {
             </button>
           </div>
 
+          <div className="text-center">
+            <button
+              type="button"
+              onClick={handleBackToOtp}
+              className="text-orange-600 text-sm hover:underline"
+            >
+              Back to OTP
+            </button>
+          </div>
+
           <span>
-            <Link to="/" className="text-blue-500 hover:underline">
+            <Link to="/" className="text-orange-800 hover:underline">
               Back to Login
             </Link>
           </span>

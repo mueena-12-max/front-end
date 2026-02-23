@@ -24,6 +24,9 @@ import {
 } from "recharts";
 library.add(fas, far, fab);
 
+// API URL - use environment variable in production
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8"];
 
 const StatisticsPage = () => {
@@ -42,7 +45,7 @@ const StatisticsPage = () => {
 
       try {
         // Fetch all statistics in one call
-        const statsRes = await fetch("http://localhost:5000/statistics", {
+        const statsRes = await fetch(`${API_URL}/statistics`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

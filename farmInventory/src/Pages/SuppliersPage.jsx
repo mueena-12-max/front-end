@@ -9,6 +9,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useAuthStore from "../Store/authStore";
 library.add(fas, far, fab);
 
+// API URL - use environment variable in production
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const SuppliersPage = () => {
   //state for adding supplier overlay
   const [addSupplierOvelay, setAddSupplierOverlay] = useState(false);
@@ -41,7 +44,7 @@ const SuppliersPage = () => {
       setIsLoading(true);
 
       try {
-        const res = await fetch(`http://localhost:5000/suppliers/fetch`, {
+        const res = await fetch(`${API_URL}/suppliers/fetch`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -74,7 +77,7 @@ const SuppliersPage = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/suppliers/add`, {
+      const res = await fetch(`${API_URL}/suppliers/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -97,16 +100,13 @@ const SuppliersPage = () => {
       setContact("");
 
       // Refresh suppliers list
-      const resSuppliers = await fetch(
-        `http://localhost:5000/suppliers/fetch`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+      const resSuppliers = await fetch(`${API_URL}/suppliers/fetch`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
       const dataSuppliers = await resSuppliers.json();
       if (resSuppliers.ok) {
         setFetchedSuppliers(dataSuppliers.suppliers || []);

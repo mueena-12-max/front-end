@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
+// API URL - use environment variable in production
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const Signup = () => {
   const navigate = useNavigate();
   //show password state
@@ -23,7 +26,7 @@ const Signup = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/auth/register`, {
+      const res = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

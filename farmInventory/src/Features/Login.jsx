@@ -4,6 +4,10 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthStore from "../Store/authStore";
 import toast from "react-hot-toast";
+
+// API URL - use environment variable in production
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const Login = () => {
   const navigate = useNavigate();
 
@@ -20,7 +24,7 @@ const Login = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://localhost:5000/auth/login`, {
+      const res = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -80,17 +84,12 @@ const Login = () => {
             Login
           </button>
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between  items-center">
           <span>
             <Link to="/signup">Signup</Link>
           </span>
-          <span>
-            <Link
-              to="/forgot-password"
-              className="text-blue-500 hover:underline"
-            >
-              Forgot Password?
-            </Link>
+          <span className="text-orange-800 font-bold">
+            <Link to="/forgot-password">Forgot Password?</Link>
           </span>
         </div>
       </form>

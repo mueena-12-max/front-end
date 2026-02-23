@@ -10,6 +10,9 @@ import useAuthStore from "../Store/authStore";
 import toast from "react-hot-toast";
 library.add(fas, far, fab);
 
+// API URL - use environment variable in production
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const CustomersPage = () => {
   const navigate = useNavigate();
   const { token } = useAuthStore();
@@ -40,16 +43,13 @@ const CustomersPage = () => {
     setLoading(true);
     try {
       // Fetch transactions
-      const transactionsRes = await fetch(
-        "http://localhost:5000/customers/transactions",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+      const transactionsRes = await fetch(`${API_URL}/customers/transactions`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
       const transactionsData = await transactionsRes.json();
       if (transactionsRes.ok) {
         setTransactions(transactionsData.transactions || []);
@@ -76,23 +76,20 @@ const CustomersPage = () => {
     }
 
     try {
-      const res = await fetch(
-        "http://localhost:5000/customers/add-transaction",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            customerName,
-            productName,
-            quantity: parseInt(quantity),
-            amountPaid: parseFloat(amountPaid),
-            saleDate,
-          }),
+      const res = await fetch(`${API_URL}/customers/add-transaction`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-      );
+        body: JSON.stringify({
+          customerName,
+          productName,
+          quantity: parseInt(quantity),
+          amountPaid: parseFloat(amountPaid),
+          saleDate,
+        }),
+      });
 
       const data = await res.json();
 

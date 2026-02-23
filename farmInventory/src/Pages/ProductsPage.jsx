@@ -9,6 +9,10 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../Store/authStore";
 library.add(fas, far, fab);
+
+// API URL - use environment variable in production
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const ProductsPage = () => {
   //state for displaying add product screen
   const [addProduct, setAddProduct] = useState(false);
@@ -49,7 +53,7 @@ const ProductsPage = () => {
       setIsLoading(true);
 
       try {
-        const res = await fetch(`http://localhost:5000/product/fetch`, {
+        const res = await fetch(`${API_URL}/product/fetch`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -76,7 +80,7 @@ const ProductsPage = () => {
       if (!token) return;
 
       try {
-        const res = await fetch(`http://localhost:5000/suppliers/fetch`, {
+        const res = await fetch(`${API_URL}/suppliers/fetch`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -109,7 +113,7 @@ const ProductsPage = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/product/add`, {
+      const res = await fetch(`${API_URL}/product/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -141,7 +145,7 @@ const ProductsPage = () => {
       setSupplierName("");
 
       // Refresh products list after adding
-      const resProducts = await fetch(`http://localhost:5000/product/fetch`, {
+      const resProducts = await fetch(`${API_URL}/product/fetch`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
