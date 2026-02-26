@@ -13,6 +13,7 @@ import ProductsPage from "./ProductsPage";
 import SuppliersPage from "./SuppliersPage";
 import StatisticsPage from "./StatisticsPage";
 import CustomersPage from "./Customers";
+import Settings from "./Settings";
 
 const Dashboard = () => {
   const { logoutFunc, login, token } = useAuthStore();
@@ -44,7 +45,7 @@ const Dashboard = () => {
 
     // Cleanup function to clear the interval
     return () => clearInterval(timer);
-  });
+  }, [login, token, navigate]);
 
   // Function to handle navigation and close sidebar on mobile
   const handleNav = (setter) => {
@@ -55,25 +56,27 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col h-screen relative z-0">
       {/*header component */}
-      <header className="w-full flex md:flex-row flex-col shadow-2xl font-sans shadow-black md:justify-between md:items-center bg-[#01398e] p-4 md:p-0">
-        <div className="flex gap-2 md:text-[20px] py-2 text-white ml-4 items-center">
+      <header className="w-full flex md:flex-row flex-col shadow-2xl font-sans shadow-black justify-between md:items-center bg-[#01398e]  md:p-0">
+        <div className="flex justify-between gap-2  md:text-[20px] py-2 text-white md:ml-4 items-center">
           <button
-            className="md:hidden mr-2 p-2"
+            className="md:hidden  p-2"
             onClick={() => setSidebarOpen(!sidebarOpen)}
           >
             <FontAwesomeIcon icon="fa-bars" className="text-2xl text-white" />
           </button>
-          <img
-            src="logo.jpeg"
-            alt="logo"
-            width={30}
-            height={30}
-            className="rounded-full"
-          />
-          <span className="shadow-lg">2M WORLDWIDE LTD</span>
+          <div className="flex gap-2 ">
+            <img
+              src="logo.jpeg"
+              alt="logo"
+              width={30}
+              height={30}
+              className="rounded-full"
+            />
+            <span className="shadow-lg mr-2 md:mr-0">2M WORLDWIDE LTD</span>
+          </div>
         </div>
-        <div>
-          <div className="flex items-center gap-4 text-white md:mr-16">
+        <div className="px-2 md:px-0">
+          <div className="flex items-center justify-between md:justify-center gap-4 text-white md:mr-16 text-xl">
             <div className="flex items-center gap-1 hover:bg-blue-600 py-2 px-1">
               <FontAwesomeIcon icon="fa-solid fa-user" className="text-xl" />
               <span className="md:text-[18px]">
@@ -90,7 +93,7 @@ const Dashboard = () => {
                 to="/"
                 className="md:text-[18px] font-bold"
                 onClick={() => {
-                  logoutFunc;
+                  logoutFunc();
                 }}
               >
                 Log Out
@@ -306,6 +309,7 @@ const Dashboard = () => {
                       setSuppliersColor(true);
                       setCustomersColor(false);
                       setStatistics(false);
+                      setSettings(false);
                     })
                   }
                 >
@@ -324,6 +328,7 @@ const Dashboard = () => {
                       setSuppliersColor(false);
                       setCustomersColor(true);
                       setStatistics(false);
+                      setSettings(false);
                     })
                   }
                 >
@@ -351,7 +356,17 @@ const Dashboard = () => {
                   />
                   <h3 className="text-lg md:text-xl">Statistics</h3>
                 </div>
-                <div className="bg-[#fefeff] border border-black shadow-md shadow-black p-4 md:w-72 flex flex-col gap-2 items-center justify-center h-28 rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out w-35">
+                <div
+                  className="bg-[#fefeff] border border-black shadow-md shadow-black p-4 md:w-72 flex flex-col gap-2 items-center justify-center h-28 rounded-2xl hover:scale-95 transition-all duration-500 ease-in-out w-35"
+                  onClick={() => {
+                    setProductsColor(false);
+                    setDashboardColor(false);
+                    setSuppliersColor(false);
+                    setCustomersColor(false);
+                    setStatistics(false);
+                    setSettings(true);
+                  }}
+                >
                   <FontAwesomeIcon
                     icon="fa-gear"
                     className="text-4xl md:text-5xl text-[darkred]"
@@ -365,7 +380,7 @@ const Dashboard = () => {
 
         {/*any other code below here is another navigation section */}
         <section
-          className={`${productsColor ? "flex md:ml-16 w-full ml-2 h-[93vh] overflow-auto" : "hidden"}`}
+          className={`${productsColor ? "flex md:ml-16 w-[98vw] md:w-full ml-2 h-[93vh] overflow-auto" : "hidden"}`}
         >
           <ProductsPage />
         </section>
@@ -387,6 +402,12 @@ const Dashboard = () => {
           className={`${statistics ? "flex md:ml-16 ml-2 w-full h-[93vh] overflow-auto" : "hidden"}`}
         >
           <StatisticsPage />
+        </section>
+        {/*settings page */}
+        <section
+          className={`${settings ? "flex md:ml-4 ml-2 w-full h-[93vh] overflow-auto" : "hidden"}`}
+        >
+          <Settings />
         </section>
       </main>
     </div>

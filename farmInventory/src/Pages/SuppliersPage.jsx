@@ -225,45 +225,54 @@ const SuppliersPage = () => {
 
       {/*add supplier overlay*/}
       <div
-        className={`${addSupplierOvelay ? "flex" : "hidden"} flex-col gap-2 justify-center l h-[50vh] md:w-[50%] w-[95vw] top-20 md:left-30 absolute z-10 bg-white border border-blue-600`}
+        className={`${addSupplierOvelay ? "flex" : "hidden"} flex-col gap-2 justify-between  h-[50vh] md:w-[26vw] w-[95vw] top-20 md:top-30 md:left-90 absolute z-10 bg-white shadow-md shadow-black rounded-md p-4`}
       >
-        <div className="flex justify-end w-full pr-2 absolute z-11 top-0">
-          <FontAwesomeIcon
-            icon="fa-close"
-            onClick={() => setAddSupplierOverlay(false)}
-          />
+        <div className="w-full flex justify-between">
+          <span className="font-bold text-xl">Add Supplier</span>
+          <div className="flex  pr-2 ">
+            <FontAwesomeIcon
+              icon="fa-close"
+              className="text-gray-500 text-xl hover:text-gray-700"
+              onClick={() => setAddSupplierOverlay(false)}
+            />
+          </div>
         </div>
-        <div className="flex flex-col pl-2 text-xl gap-1">
-          <label htmlFor="supplier-name" className="font-bold">
-            Supplier Name
-          </label>
-          <input
-            type="text"
-            id="supply-name"
-            className="ring-2 ring-gray-300 ring-offset-0 w-[90%] py-2 rounded-md px-2"
-            value={supplierName}
-            onChange={(e) => setSupplierName(e.target.value)}
-          />
+        <div>
+          <div className="flex flex-col pl-2  gap-1">
+            <label htmlFor="supplier-name">Supplier Name</label>
+            <input
+              type="text"
+              id="supply-name"
+              className="border-2 border-gray-300 rounded px-3 py-2 outline-none focus:ring-2 focus:ring-[#42a8c6]"
+              value={supplierName}
+              onChange={(e) => setSupplierName(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-col pl-2  gap-1">
+            <label htmlFor="supplier-contact">Contact</label>
+            <input
+              type="tel"
+              id="supply-contact"
+              className="border-2 border-gray-300 rounded px-3 py-2 outline-none focus:ring-2 focus:ring-[#42a8c6]"
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
+            />
+          </div>
         </div>
-        <div className="flex flex-col pl-2 text-xl gap-1">
-          <label htmlFor="supplier-contact" className="font-bold">
-            Contact
-          </label>
-          <input
-            type="number"
-            id="supply-contact"
-            className="ring-2 ring-gray-300 ring-offset-0 w-[90%] py-2 rounded-md px-2"
-            value={contact}
-            onChange={(e) => setContact(e.target.value)}
-          />
+        <div className="flex justify-end gap-2">
+          <button
+            type="button"
+            className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100"
+          >
+            Cancel
+          </button>
+          <button
+            className="px-4 py-2 bg-[#42a8c6] text-white rounded hover:bg-[#3a9ab8] "
+            onClick={addSupplier}
+          >
+            Add Supplier
+          </button>
         </div>
-
-        <button
-          className="outline-none text-white bg-[#42a8c6] w-[90%] md:w-[50%] rounded-md py-2 ml-2 mt-4"
-          onClick={addSupplier}
-        >
-          Add Supplier
-        </button>
       </div>
     </section>
   );

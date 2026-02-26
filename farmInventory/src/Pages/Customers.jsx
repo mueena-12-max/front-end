@@ -17,6 +17,9 @@ const CustomersPage = () => {
   const navigate = useNavigate();
   const { token } = useAuthStore();
 
+  // State for search
+  const [searchTerm, setSearchTerm] = useState("");
+
   // State for customers and transactions
 
   const [transactions, setTransactions] = useState([]);
@@ -31,6 +34,15 @@ const CustomersPage = () => {
   const [saleDate, setSaleDate] = useState(
     new Date().toISOString().split("T")[0],
   );
+
+  // Filter transactions based on search term (only filter if searchTerm is not empty)
+  const filteredTransactions = searchTerm
+    ? transactions.filter((transaction) =>
+        (transaction.customer_name || "")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()),
+      )
+    : transactions;
 
   // Fetch customers and transactions on component mount
   useEffect(() => {
@@ -160,6 +172,8 @@ const CustomersPage = () => {
             type="text"
             className="w-full md:w-[65%] bg-white ring-2 ring-gray-300 ring-inset text-xl py-1 pl-8 outline-none"
             placeholder="Search Customers"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <button
             className="flex gap-2 justify-center items-center px-4 bg-[#42a8c6] text-white rounded-sm hover:bg-[#3a9ab8]"
@@ -185,9 +199,9 @@ const CustomersPage = () => {
                 <th className="py-2 px-4 border-b text-left">
                   Product Purchased
                 </th>
+                <th className="py-2 px-4 border-b text-left">Quantity</th>
                 <th className="py-2 px-4 border-b text-left">Date</th>
                 <th className="py-2 px-4 border-b text-left">Amount Paid</th>
-                <th className="py-2 px-4 border-b text-left">Quantity</th>
               </tr>
             </thead>
             <tbody>
@@ -201,14 +215,16 @@ const CustomersPage = () => {
                     Loading...
                   </td>
                 </tr>
-              ) : transactions.length === 0 ? (
+              ) : filteredTransactions.length === 0 ? (
                 <tr>
                   <td colSpan="5" className="py-4 text-center text-gray-500">
-                    No transactions found
+                    {searchTerm
+                      ? "No matching transactions found"
+                      : "No transactions found"}
                   </td>
                 </tr>
               ) : (
-                transactions.map((transaction, index) => (
+                filteredTransactions.map((transaction, index) => (
                   <tr key={index} className="hover:bg-gray-50">
                     <td className="py-2 px-4 border-b">
                       {transaction.customer_name || "N/A"}
@@ -217,13 +233,14 @@ const CustomersPage = () => {
                       {transaction.product_name}
                     </td>
                     <td className="py-2 px-4 border-b">
+                      {transaction.quantity}
+                    </td>
+                    <td className="py-2 px-4 border-b">
                       {new Date(transaction.sale_date).toLocaleDateString()}
                     </td>
                     <td className="py-2 px-4 border-b">
-                      ${transaction.amount_paid}
-                    </td>
-                    <td className="py-2 px-4 border-b">
-                      {transaction.quantity}
+                      <FontAwesomeIcon icon="fa-cedi-sign" color="darkgreen" />
+                      {transaction.amount_paid}
                     </td>
                   </tr>
                 ))

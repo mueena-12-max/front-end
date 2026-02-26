@@ -162,9 +162,9 @@ const ProductsPage = () => {
     }
   };
   return (
-    <section className=" flex flex-col gap-2 w-full ">
+    <section className=" flex flex-col gap-2 md:w-full w-[98vw] overflow-x-auto ">
       {/*header */}
-      <div>
+      <div className="w-full overflow-auto">
         <div className="flex  justify-start items-center bg-gray-200 p-2 w-[93%]  mt-2 border-b border-gray-300 rounded-t-md mr-2">
           <FontAwesomeIcon icon="fa-cart-shopping" className="text-2xl" />
           <h2 className="text-2xl font-bold">Products</h2>
@@ -175,77 +175,72 @@ const ProductsPage = () => {
         </div>
       </div>
       {/*main content */}
-      <div className="w-full flex flex-col gap-2">
-        <div className="w-[70%] flex justify-start  font-bold   ">
-          <div className="flex flex-col gap-1 md:text-[25px]">
-            <span>
-              Total Number of Products:{" "}
-              <span className="text-[#018100] ">[{totalProducts}]</span>
-            </span>
-            <span>
-              <span className="font-bold text-[#ff5f60]">
-                [{lowQuantityProducts}]
-              </span>{" "}
-              Products are below Quantity of 10
-            </span>
+      <div className="  md:w-full  flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-[98vw] md:w-full">
+          <div className=" md:w-[70%] flex justify-start  font-bold   ">
+            <div className="flex flex-col gap-1 md:text-[25px]">
+              <span>
+                Total Number of Products:{" "}
+                <span className="text-[#018100] ">[{totalProducts}]</span>
+              </span>
+              <span>
+                <span className="font-bold text-[#ff5f60]">
+                  [{lowQuantityProducts}]
+                </span>{" "}
+                Products are below Quantity of 10
+              </span>
+            </div>
           </div>
-        </div>
-        {/*search bar */}
-        <div className="flex gap-16 pr-2 justify-between mr-4">
-          <input
-            type="text"
-            className="w-[65%] bg-white ring-2 ring-gray-300 ring-inset text-xl py-1 pl-8 outline-none"
-            placeholder="Search Product"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <div
-            className="flex gap-2 justify-center items-center px-16 bg-[#42a8c6] text-white rounded-sm cursor-pointer"
-            onClick={() => {
-              setAddProduct(true);
-            }}
-          >
-            <FontAwesomeIcon
-              icon="fa-plus"
-              className="bg-white text-[#42a8c6] rounded-full py-1 px-1 text-[13px]"
+          {/*search bar */}
+          <div className="flex md:flex-row flex-col md:gap-16 gap-4 pr-2 justify-between mr-4">
+            <input
+              type="text"
+              className="w-[95vw] md:w-[65%] bg-white ring-2 ring-gray-300 ring-inset text-xl py-1 pl-2 md:pl-8 outline-none"
+              placeholder="Search Product"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <span>Add Product</span>
+            <div
+              className="flex gap-2 justify-center items-center px-16 bg-[#42a8c6] text-white rounded-sm cursor-pointer"
+              onClick={() => {
+                setAddProduct(true);
+              }}
+            >
+              <FontAwesomeIcon
+                icon="fa-plus"
+                className="bg-white text-[#42a8c6] rounded-full py-1 px-1 text-[13px]"
+              />
+              <span>Add Product</span>
+            </div>
           </div>
         </div>
         {/*add product overlay */}
         <div
-          className={`${addProduct ? "flex" : "hidden"} flex-col items-center  absolute z-10 top-[20vh] left-[30vw] p-2 bg-white border-2 border-blue-500 w-[50vw] h-[60vh] leading-loose`}
+          className={`${addProduct ? "flex" : "hidden"} flex-col gap-4 items-center  fixed inset-0 z-10 top-[20vh] left-[3vw] md:left-[40vw] rounded-md p-4 bg-white shadow-md shadow-black w-[95vw] md:w-[28vw] h-[73vh] md:h-[60vh] leading-loose`}
         >
-          {/*close button */}
-          <div
-            className="flex justify-end w-full"
-            onClick={() => setAddProduct(false)}
-          >
-            <FontAwesomeIcon
-              icon="fa-close"
-              className="shadow p-2 text-red-500"
-            />
-          </div>
-          <div className="w-full flex justify-center items-center gap-2">
-            <div className="bg-black  text-white rounded-full px-1">
-              <FontAwesomeIcon
-                icon="fa-add"
-                className="bg-black  text-white rounded-full"
-              />
+          <div className="flex justify-between w-full ">
+            <div>
+              <h3 className="text-2xl font-bold">Add Product</h3>
             </div>
-            <h3 className="text-xl ">Add Product</h3>
+            {/*close button */}
+            <div
+              onClick={() => setAddProduct(false)}
+              className="text-gray-500 hover:text-gray-700 text-xl"
+            >
+              <FontAwesomeIcon icon="fa-times" />
+            </div>
           </div>
           {/*adding items section */}
-          <div className="w-[80%] flex flex-col gap-2">
+          <div className="w-full flex flex-col justify-between gap-2 font-medium ">
             {/*product selection */}
             <div className="flex flex-col">
-              <label htmlFor="product" className="font-bold text-xl">
+              <label htmlFor="product" className="">
                 Select Product :
               </label>
               <select
                 name="product"
                 id="product"
-                className="ring-2 ring-gray-300 ring-inset py-2 px-2"
+                className="border font-light border-gray-300 rounded px-3 py-2 outline-none focus:ring-2 focus:ring-[#42a8c6]"
                 value={productName}
                 onChange={(e) => setProductName(e.target.value)}
               >
@@ -261,15 +256,13 @@ const ProductsPage = () => {
 
             {/*quantity selection */}
             <div className="flex flex-col">
-              <label htmlFor="quantity" className="font-bold text-xl">
-                Quantity:
-              </label>
+              <label htmlFor="quantity">Quantity:</label>
               <input
                 type="number"
                 min={0}
                 id="quantity"
                 required
-                className="ring-2 ring-gray-300 ring-inset py-2 px-2 outline-none"
+                className="border border-gray-300 rounded px-3 py-2 outline-none focus:ring-2 focus:ring-[#42a8c6]"
                 value={productQuantity}
                 onChange={(e) => setProductQuantity(e.target.value)}
               />
@@ -277,21 +270,19 @@ const ProductsPage = () => {
             {/*price selection */}
             <div className="flex items-center gap-8">
               <div className="flex flex-col">
-                <label htmlFor="unit-price" className="font-bold text-xl">
-                  Unit Price:
-                </label>
+                <label htmlFor="unit-price">Unit Price:</label>
                 <input
                   type="number"
                   id="unit-price"
                   min={0}
                   required
-                  className="ring-2 ring-gray-300 ring-inset py-2 px-2 outline-none"
+                  className="border-2 border-gray-300 rounded px-3 py-2 outline-none focus:ring-2 focus:ring-[#42a8c6]"
                   value={productUnitPrice}
                   onChange={(e) => setProductUnitPrice(e.target.value)}
                 />
               </div>
               <div className="flex flex-col">
-                <div className="font-bold text-xl">Total Price:</div>
+                <div className="text-xl">Total Price:</div>
                 <div className="  font-bold text-2xl">
                   <FontAwesomeIcon
                     icon="fa-cedi-sign"
@@ -304,14 +295,12 @@ const ProductsPage = () => {
 
             {/*supplier section - now a dropdown */}
             <div className="flex flex-col w-1/2">
-              <label htmlFor="supplier-name" className="font-bold text-xl">
-                Supplier Name:
-              </label>
+              <label htmlFor="supplier-name">Supplier Name:</label>
               <select
                 name="supplier"
                 id="supplier-name"
                 required
-                className="ring-2 ring-gray-300 ring-inset py-2 px-2 outline-none"
+                className="border-2 font-light border-gray-300 rounded px-3 py-2 outline-none focus:ring-2 focus:ring-[#42a8c6]"
                 value={supplierName}
                 onChange={(e) => setSupplierName(e.target.value)}
               >
@@ -327,93 +316,93 @@ const ProductsPage = () => {
               </select>
             </div>
             {/*submit */}
-            <div className=" text-center py-1 bg-blue-500 mt-4 text-white cursor-pointer rounded-md shadow-md shadow-blue-300">
+
+            <div className="flex gap-2 justify-end mt-4 w-full">
               <button
                 type="button"
-                className="outline-none font-bold text-xl "
+                className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100 "
+                onClick={() => setAddProduct(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="px-4 py-2 bg-[#42a8c6] text-white rounded hover:bg-[#3a9ab8] "
                 onClick={addProductFunc}
               >
-                Add
+                Add Product
               </button>
             </div>
           </div>
         </div>
 
-        {/*Product display */}
-        {isLoading ? (
-          <div className="w-[90%] flex justify-center items-center py-8">
-            <FontAwesomeIcon
-              icon="fa-spinner"
-              className="text-3xl animate-spin text-blue-500"
-            />
-            <span className="ml-2 text-lg">Loading products...</span>
-          </div>
-        ) : filteredProducts.length === 0 ? (
-          <table className="w-[90%]">
-            <thead className="bg-[#efefee]">
-              <tr>
-                <th className="py-2">Product Name</th>
-                <th className="py-2">Quantity(Bags)</th>
-                <th className="py-2">Total Price</th>
-                <th className="py-2">Date Of Supply</th>
-                <th className="py-2">Supplier Name</th>
-                <th className="py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td colSpan={6} className="text-center py-8 text-gray-500">
-                  No products found
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        ) : (
-          <table className="w-[90%] relative z-0">
-            <thead className="bg-[#efefee] ring-2 ring-gray-300 ring-inset">
-              <tr>
-                <th className="py-2">Product Name</th>
-                <th className="py-2">Quantity(Bags)</th>
-                <th className="py-2">Total Price</th>
-                <th className="py-2">Date Of Supply</th>
-                <th className="py-2">Supplier Name</th>
-                <th className="py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredProducts.map((product, index) => (
-                <tr
-                  key={product.product_id || index}
-                  className="text-center border-b border-gray-200 hover:bg-gray-50 font-bold"
-                >
-                  <td className="py-2">{product.product_name}</td>
-                  <td className="py-2">{product.product_quantity}</td>
-                  <td className="py-2">
-                    <FontAwesomeIcon
-                      icon="fa-cedi-sign"
-                      className="text-green-600 mr-1"
-                    />
-                    {product.product_total_price}
-                  </td>
-                  <td className="py-2">
-                    {product.created_at
-                      ? new Date(product.created_at).toLocaleDateString()
-                      : "-"}
-                  </td>
-                  <td className="py-2">{product.supplier_name}</td>
-                  <td className="py-2">
-                    <button className="text-blue-500 hover:text-blue-700 mx-1">
-                      <FontAwesomeIcon icon="fa-edit" />
-                    </button>
-                    <button className="text-red-500 hover:text-red-700 mx-1">
-                      <FontAwesomeIcon icon="fa-trash" />
-                    </button>
+        <div className="flex w-[98vw] md:w-full overflow-auto">
+          {/*Product display */}
+          {isLoading ? (
+            <div className="w-[90%] flex justify-center items-center py-8">
+              <FontAwesomeIcon
+                icon="fa-spinner"
+                className="text-3xl animate-spin text-blue-500"
+              />
+              <span className="ml-2 text-lg">Loading products...</span>
+            </div>
+          ) : filteredProducts.length === 0 ? (
+            <table className="w-[90%]">
+              <thead className="bg-[#efefee]">
+                <tr>
+                  <th className="py-2">Product Name</th>
+                  <th className="py-2">Quantity(Bags)</th>
+                  <th className="py-2">Total Price</th>
+                  <th className="py-2">Date Of Supply</th>
+                  <th className="py-2">Supplier Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td colSpan={6} className="text-center py-8 text-gray-500">
+                    No products found
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+              </tbody>
+            </table>
+          ) : (
+            <table className="  w-[90vw]  md:w-[90%] ">
+              <thead className="bg-[#efefee] ring-2 ring-gray-300 ring-inset">
+                <tr>
+                  <th className="py-2">Product Name</th>
+                  <th className="py-2">Quantity(Bags)</th>
+                  <th className="py-2">Total Price</th>
+                  <th className="py-2">Date Of Supply</th>
+                  <th className="py-2">Supplier Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredProducts.map((product, index) => (
+                  <tr
+                    key={product.product_id || index}
+                    className="text-center border-b border-gray-200 hover:bg-gray-50 font-bold"
+                  >
+                    <td className="py-2">{product.product_name}</td>
+                    <td className="py-2">{product.product_quantity}</td>
+                    <td className="py-2">
+                      <FontAwesomeIcon
+                        icon="fa-cedi-sign"
+                        className="text-green-600 mr-1"
+                      />
+                      {product.product_total_price}
+                    </td>
+                    <td className="py-2">
+                      {product.created_at
+                        ? new Date(product.created_at).toLocaleDateString()
+                        : "-"}
+                    </td>
+                    <td className="py-2">{product.supplier_name}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
     </section>
   );
